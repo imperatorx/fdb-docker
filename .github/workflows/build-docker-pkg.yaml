@@ -1,16 +1,18 @@
-name: Build and Push Docker Image
+name: Build and Push Package Docker Image
 
 on:
-  push:
-    branches:
-      - main
-      - build-images
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #     - build-images
 
 jobs:
   build-and-push:
     runs-on:
       - ephemeral
       - self-hosted
+      - size-xlarge
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,14 +31,12 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: us-docker.pkg.dev/dev-staging-308107/devbox-containers/foundationdb
-          tags: |
-            type=raw,value=7.1.42
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: docker
-          file: ./docker/self_contained.Dockerfile
+          context: .
+          file: ./docker/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
