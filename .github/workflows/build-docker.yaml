@@ -15,12 +15,13 @@ jobs:
     runs-on:
       - ephemeral
       - self-hosted
+      - ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix:
         platform:
-          - linux/amd64
-          - linux/arm64
+          - amd64
+          - arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -48,7 +49,7 @@ jobs:
           build-args: |
             FDB_VERSION=${{ env.FDB_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ matrix.platform }}
+          platforms: linux/${{ matrix.platform }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
       - name: Export digest
         run: |
