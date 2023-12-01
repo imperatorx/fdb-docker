@@ -15,7 +15,7 @@ WORKDIR /
 RUN mkdir fdb-build
 WORKDIR /fdb-build
 RUN cmake -D CMAKE_CXX_FLAGS="-U_FORTIFY_SOURCE" -G Ninja /fdb-src/foundationdb
-RUN ninja
+RUN ninja -j5
 RUN cpack -G DEB
 
 FROM ubuntu:latest
