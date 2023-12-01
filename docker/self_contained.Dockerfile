@@ -8,6 +8,8 @@ WORKDIR /
 
 RUN mkdir -p /var/fdb/logs
 
+RUN apt-get update && apt-get install tini -y
+
 # Install foundationdb clients
 COPY --from=built_fdb /fdb-build/packages/foundationdb-clients*.deb foundationdb-clients.deb
 COPY --from=built_fdb /fdb-build/packages/lib/libfdb_java.so libfdb_java.so
@@ -38,4 +40,5 @@ RUN rm foundationdb-server.deb
 
 EXPOSE 4500
 
-CMD /fdb_single.bash
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
+CMD ["/fdb_single.bash"]
