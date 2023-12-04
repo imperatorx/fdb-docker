@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: docker
-          file: ./docker/self_contained.Dockerfile
+          file: ./docker/fdb-binary.Dockerfile
           build-args: |
             FDB_VERSION=${{ env.FDB_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}

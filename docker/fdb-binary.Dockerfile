@@ -17,8 +17,6 @@ RUN dpkg -i foundationdb-clients.deb
 RUN rm foundationdb-clients.deb
 
 # We need to not create a new foundationdb database when installing foundationdb-server.deb
-# COPY init_foundationdb.cluster.sh .
-# COPY run_foundationdb.sh .
 COPY fdb_single.bash .
 RUN chmod u+x fdb_single.bash
 
@@ -29,9 +27,6 @@ ENV FDB_COORDINATOR ""
 ENV FDB_COORDINATOR_PORT 4500
 ENV FDB_CLUSTER_FILE_CONTENTS ""
 ENV FDB_PROCESS_CLASS unset
-# RUN chmod u+x init_foundationdb.cluster.sh
-# RUN chmod u+x run_foundationdb.sh
-# RUN /init_foundationdb.cluster.sh
 
 # Install foundationdb server
 COPY --from=built_fdb /fdb-build/packages/foundationdb-server*.deb foundationdb-server.deb
